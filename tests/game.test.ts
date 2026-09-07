@@ -26,19 +26,38 @@ describe("TactiTac game rules", () => {
     expect(getWinningCells(board)).toEqual([]);
   });
 
-  it("takes a winning move before choosing a defensive move", () => {
+  it("Easy chooses the only available move", () => {
+    const board = ["X", "O", "X", "X", "O", "O", "O", "X", null] as Cell[];
+
+    expect(getCpuMove(board, "easy")).toBe(8);
+  });
+
+  it("Medium takes a winning move before choosing a defensive move", () => {
     const board = ["O", "O", null, "X", "X", null, null, null, null] as Cell[];
 
-    expect(getCpuMove(board)).toBe(2);
+    expect(getCpuMove(board, "medium")).toBe(2);
   });
 
-  it("blocks the opponent when no winning move is available", () => {
+  it("Medium blocks the opponent when no winning move is available", () => {
     const board = ["X", "X", null, "O", null, null, null, null, null] as Cell[];
 
-    expect(getCpuMove(board)).toBe(2);
+    expect(getCpuMove(board, "medium")).toBe(2);
   });
 
-  it("prefers the center on an empty board", () => {
-    expect(getCpuMove(empty())).toBe(4);
+  it("Unbeatable takes a winning move", () => {
+    const board = ["O", "O", null, "X", "X", null, null, null, null] as Cell[];
+
+    expect(getCpuMove(board, "unbeatable")).toBe(2);
+  });
+
+  it("Unbeatable chooses a safe side against the classic corner fork", () => {
+    const board = ["X", null, null, null, "O", null, null, null, "X"] as Cell[];
+    const move = getCpuMove(board, "unbeatable");
+
+    expect([1, 3, 5, 7]).toContain(move);
+  });
+
+  it("Unbeatable opens with the center", () => {
+    expect(getCpuMove(empty(), "unbeatable")).toBe(4);
   });
 });

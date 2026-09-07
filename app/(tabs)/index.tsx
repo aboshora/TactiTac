@@ -13,7 +13,7 @@ import * as Haptics from "expo-haptics";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { ScreenContainer } from "@/components/screen-container";
-import { getCpuMove, getOutcome, getWinningCells, type Cell, type Mark, type Outcome } from "@/lib/game";
+import { getCpuMove, getOutcome, getWinningCells, type Cell, type Difficulty, type Mark, type Outcome } from "@/lib/game";
 
 type GameMode = "cpu" | "local";
 
@@ -48,6 +48,7 @@ export default function HomeScreen() {
   const [board, setBoard] = useState<Cell[]>(EMPTY_BOARD);
   const [turn, setTurn] = useState<Mark>("X");
   const [mode, setMode] = useState<GameMode>("cpu");
+  const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [outcome, setOutcome] = useState<Outcome>(null);
   const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
   const [round, setRound] = useState(1);
@@ -61,12 +62,12 @@ export default function HomeScreen() {
     if (!isCpuTurn) return;
 
     const timer = setTimeout(() => {
-      const move = getCpuMove(board);
+      const move = getCpuMove(board, difficulty);
       if (move !== undefined) makeMove(move, "O");
     }, 420);
 
     return () => clearTimeout(timer);
-  }, [isCpuTurn, board]);
+  }, [isCpuTurn, board, difficulty]);
 
   function makeMove(index: number, mark: Mark) {
     if (board[index] || outcome) return;
@@ -107,6 +108,12 @@ export default function HomeScreen() {
   function changeMode(nextMode: GameMode) {
     if (nextMode === mode) return;
     setMode(nextMode);
+    startRound();
+  }
+
+  function changeDifficulty(nextDifficulty: Difficulty) {
+    if (nextDifficulty === difficulty) return;
+    setDifficulty(nextDifficulty);
     startRound();
   }
 
@@ -208,6 +215,37 @@ export default function HomeScreen() {
             <Text style={[styles.modeText, mode === "local" && styles.modeTextActive]}>PASS & PLAY</Text>
           </Pressable>
         </View>
+
+        {mode === "cpu" && (
+          <View style={styles.difficultySection}>
+            <View style={styles.difficultyHeader}>
+              <Text style={styles.difficultyLabel}>CPU DIFFICULTY</Text>
+              <Text style={styles.difficultyHint}>
+                {difficulty === "easy" ? "WARM UP" : difficulty === "medium" ? "SMART MOVES" : "PERFECT PLAY"}
+              </Text>
+            </View>
+            <View style={styles.difficultySwitch} accessibilityRole="tablist">
+              {(["easy", "medium", "unbeatable"] as Difficulty[]).map((level) => (
+                <Pressable
+                  key={level}
+                  onPress={() => changeDifficulty(level)}
+                  accessibilityRole="tab"
+                  accessibilityLabel={`${level} difficulty`}
+                  accessibilityState={{ selected: difficulty === level }}
+                  style={({ pressed }) => [
+                    styles.difficultyOption,
+                    difficulty === level && styles.difficultyOptionActive,
+                    pressed && styles.difficultyOptionPressed,
+                  ]}
+                >
+                  <Text style={[styles.difficultyOptionText, difficulty === level && styles.difficultyOptionTextActive]}>
+                    {level === "unbeatable" ? "UNBEATABLE" : level.toUpperCase()}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        )}
 
         <View style={styles.scoreStrip}>
           <ScoreCard mark="X" score={scores.X} label={mode === "cpu" ? "YOU" : "PLAYER X"} accent={COLORS.lime} />
@@ -461,6 +499,63 @@ const styles = StyleSheet.create({
   },
   modeTextActive: {
     color: COLORS.bg,
+  },
+  difficultySection: {
+    marginTop: -6,
+    marginBottom: 18,
+  },
+  difficultyHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 3,
+    marginBottom: 8,
+  },
+  difficultyLabel: {
+    color: COLORS.muted,
+    fontSize: 9,
+    fontWeight: "900",
+    letterSpacing: 1.2,
+  },
+  difficultyHint: {
+    color: COLORS.lime,
+    fontSize: 9,
+    fontWeight: "800",
+    letterSpacing: 0.7,
+  },
+  difficultySwitch: {
+    flexDirection: "row",
+    gap: 5,
+    backgroundColor: COLORS.surface,
+    padding: 4,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+  },
+  difficultyOption: {
+    flex: 1,
+    minHeight: 34,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+  },
+  difficultyOptionActive: {
+    backgroundColor: COLORS.surfaceBright,
+    borderWidth: 1,
+    borderColor: COLORS.limeDark,
+  },
+  difficultyOptionPressed: {
+    opacity: 0.76,
+    transform: [{ scale: 0.98 }],
+  },
+  difficultyOptionText: {
+    color: COLORS.muted,
+    fontSize: 9,
+    fontWeight: "900",
+    letterSpacing: 0.4,
+  },
+  difficultyOptionTextActive: {
+    color: COLORS.lime,
   },
   scoreStrip: {
     flexDirection: "row",
