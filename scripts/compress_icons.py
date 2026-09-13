@@ -3,6 +3,7 @@ from PIL import Image
 
 paths = [
     Path('/home/ubuntu/tactictac/assets/images/icon.png'),
+    Path('/home/ubuntu/tactictac/assets/images/tactictac-icon-final.png'),
     Path('/home/ubuntu/tactictac/assets/images/android-icon-foreground.png'),
     Path('/home/ubuntu/tactictac/assets/images/tactictac-icon-generated.png'),
     Path('/home/ubuntu/tactictac/assets/images/tactictac-adaptive-foreground-generated.png'),
