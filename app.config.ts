@@ -2,7 +2,8 @@ import type { ExpoConfig } from "expo/config";
 
 const appName = "TactiTac";
 const appSlug = "tactictac";
-const bundleId = "space.manus.tactictac";
+const iosBundleId = "space.manus.tactictac";
+const androidPackage = "com.codepointtechnology.tactitac";
 
 const config: ExpoConfig = {
   name: appName,
@@ -15,13 +16,13 @@ const config: ExpoConfig = {
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: bundleId,
+    bundleIdentifier: iosBundleId,
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
     },
   },
   android: {
-    package: bundleId,
+    package: androidPackage,
     adaptiveIcon: {
       backgroundColor: "#0A1220",
       foregroundImage: "./assets/images/android-icon-foreground.png",
