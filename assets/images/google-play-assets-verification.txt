@@ -1,0 +1,4 @@
+Verified 2026-09-14:
+- tactictac-play-icon-512.png is a PNG, exactly 512 x 512 pixels, approximately 196 KB, and shows the selected lime X interlocked with golden O on a midnight navy background.
+- tactictac-feature-graphic-1024x500.png is a PNG, exactly 1024 x 500 pixels, approximately 405 KB, and shows the TactiTac X/O branding with readable title and subtitle.
+Both are below Google Play's stated file-size limits.
