@@ -1,0 +1,3 @@
+Verified 2026-09-14:
+- webdev-preview-root-1789417370110472838-1358.png: portrait tablet screenshot at 1200 x 1920; clean TactiTac UI with readable controls, centered board, and no clipping.
+- webdev-preview-root-1789417381890116798-3361.png: landscape tablet screenshot at 1920 x 1200; clean responsive TactiTac UI with readable controls, centered board, and no clipping.
