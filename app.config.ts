@@ -3,7 +3,7 @@ import type { ExpoConfig } from "expo/config";
 const appName = "TactiTac";
 const appSlug = "tactictac";
 const iosBundleId = "space.manus.tactictac";
-const androidPackage = "com.codepointtechnology.tactitac";
+const androidPackage = "space.manus.tactictac";
 
 const config: ExpoConfig = {
   name: appName,
